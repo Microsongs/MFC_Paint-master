@@ -26,13 +26,15 @@ private:
 public:
 	View* m_view;	//VIew 객체
 	Toolbar(View*);
-	void draw();	//버튼과 바를 그림
+	void draw();	//툴바만을 그림
+	void buttonDraw();	//툴바 내 버튼을 그림
 	void addButton(TButton *);	//T버튼 추가
 	View* getView();
 	bool findToolbar(int x,int y);	//툴바 내
 	TButton* findButton(int x, int y);	//버튼찾기
 	void onMouseMove(int x,int y);	//버튼 이동
 	int selectBtn(int x,int y);	//버튼 선택
+	
 	~Toolbar();
 };
 

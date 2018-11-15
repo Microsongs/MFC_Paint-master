@@ -16,7 +16,8 @@ void Toolbar::draw() {
 	m_view->setFillColor(RGB(230, 230, 230));
 	m_view->setTextBkColor(RGB(230, 230, 230));
 	m_view->drawRectangle(0, 0, m_xBar, m_yBar);
-
+}
+void Toolbar::buttonDraw() {
 	for (auto i : m_btn) {
 		i->draw();
 	}

@@ -70,6 +70,7 @@ void myView::redrawAll()
 {
 	if (toolbar) {
 		toolbar->draw();
+		toolbar->buttonDraw();	//버튼을그림
 		//툴바 그린 이후 다시 원색으로 변경
 		setFillColor(RGB(255, 255, 255));
 		setTextBkColor(RGB(255, 255, 255));
