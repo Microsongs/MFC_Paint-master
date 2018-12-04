@@ -3,28 +3,25 @@
 #include "View.h"
 #include "Figure.h"
 
-Toolbar::Toolbar(View* v)
+Toolbar::Toolbar(View* v) : Container(v)
 {
-	m_view = v;
-	m_xBar = m_view->getWindowWidth();
-	m_yBar = 32;
+	//m_view = v;
+	m_sizex = m_view->getWindowWidth();
+	m_sizey = 32;
 	count = 0;	//들어온 개수
 }
 
 void Toolbar::draw() {
 	m_view->setPenColor(RGB(230, 230, 230));
 	m_view->setFillColor(RGB(230, 230, 230));
-	m_view->setTextBkColor(RGB(230, 230, 230));
-	m_view->drawRectangle(0, 0, m_xBar, m_yBar);
-}
-void Toolbar::buttonDraw() {
-	for (auto i : m_btn) {
-		i->draw();
-	}
+	Container::m_view->setTextBkColor(RGB(230, 230, 230));
+	//menubar 아래 툴바
+	Container::m_view->drawRectangle(0, 32, m_sizex, 32 + m_sizey);	//0,32에서 size_x,32+sizey까지
+	Container::draw();
 }
 
 int Toolbar::selectBtn(int x,int y) {
-	TButton* b = findButton(x, y);
+	Component* b = find(x, y);
 	if (b == RECT) {
 		return Figure::RECT;
 	}
@@ -42,9 +39,11 @@ int Toolbar::selectBtn(int x,int y) {
 	return 0;	//선택된 것이 없음
 }
 
-void Toolbar::addButton(TButton* btn) {
+void Toolbar::addComponent(Component* btn) {
+	
 	btn->setX(count * 32);	//들어온 개수 * 32크기
-	btn->setToolbar(this);
+	//btn->setToolbar(this);
+	btn->setView(m_view);
 	if (btn->getTitle() == "R") {
 		RECT = btn;
 	}
@@ -54,7 +53,7 @@ void Toolbar::addButton(TButton* btn) {
 	else if (btn->getTitle() == "L") {
 		LINE = btn;
 	}
-	m_btn.push_back(btn);
+	m_list.push_back(btn);
 	count++;
 }
 
@@ -63,20 +62,31 @@ View* Toolbar::getView() {
 }
 
 bool Toolbar::findToolbar(int x,int y) {
-	return (0 <= x && x <= m_xBar
-		&& 0 <= y && y <= m_yBar);
+	return (0 <= x && x <= m_sizex
+		&& 32 <= y && y <= 32 + m_sizey);
 }
 
-TButton* Toolbar::findButton(int x,int y) {
-	for (auto b : m_btn) {
+/*
+TButton* Toolbar::find(int x,int y) {
+	for (auto b : m_list) {
 		if (b->inside(x, y)) 
-			return b;
+			return (TButton*)b;	//캐스팅
+	}
+	return nullptr;
+}
+*/
+
+Component* Toolbar::find(int x, int y) {
+	for (auto b : m_list) {
+		if (b->inside(x, y))
+			return (TButton*)b;	//캐스팅
 	}
 	return nullptr;
 }
 
-void Toolbar::onMouseMove(int x, int y) {
-	TButton *b = findButton(x, y);
+
+void Toolbar::onMouseMove(MyEvent e) {
+	Component *b = find(e.x, e.y);
 	if (lastBtn == b) return;
 	// hover in or out
 	if (lastBtn != nullptr) {

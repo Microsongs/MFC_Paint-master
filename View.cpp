@@ -10,6 +10,8 @@
 #include "MyButton.h"
 #include "TButton.h"
 #include "Toolbar.h"
+#include "Component.h"
+#include "Menu.h"
 
 using namespace std;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);  // Prototype to external fun
@@ -80,67 +82,89 @@ BOOL View::initInstance( int nCmdShow )
 
 void View::OnLButtonDown(MyEvent e)
 {
-	//debugOutput("Click\n");  // IDE의 '출력' 창에 나온다.
-	m_startX = e.x; m_startY = e.y;
-
+	m_startx = e.x; m_starty = e.y;
+	
 	//툴바는 그대로 있음
 	if (toolbar->findToolbar(e.x, e.y)) {
 		is_drawing = false;
-		//currentFig = toolbar->selectBtn(e.x,e.y);
+		currentBtn = (TButton*)toolbar->find(e.x, e.y);
+		if (currentBtn != nullptr) {
+			currentBtn->downClick();
+		}
 	}
-	else
+	else if (menubar->findMenubar(e.x, e.y)) {
+		is_drawing = false;
+	}
+	else {
 		is_drawing = true;
+	}
 
-	/*
-	MyButton *b = findButton(e.x, e.y);
-	is_drawing = b == nullptr ? true : false;
-	*/
+	Menu* onCheck = (Menu*)menubar->find(e.x, e.y);	//메뉴바 위에있으면
+	if (onCheck) {
+		if (selectMenu != 0) {	//메뉴가 골라져있는 상태이면
+			if (selectMenu == onCheck) { //같은 버튼일경우
+				onCheck->setPush();
+				selectMenu = 0;
+				invalidate();
+				return;
+			}
+			//눌려있는데 같은 버튼이 없다 = 다른 버튼이다.
+			menubar->cleanCheck();	//다 풀어주기
+			invalidate();
+		}
+		onCheck->setPush();
+		onCheck->draw();
+		selectMenu = onCheck;
+		return;
+	}
+	
+	if (selectMenu != 0) {
+		MenuItem* check = (MenuItem*)selectMenu->find(e.x, e.y);
+		//다른 메뉴를 누른 경우
+		if(check != nullptr)
+			check->clicked();
+		menuClick = true;
+	}
+	menubar->cleanCheck();
+	selectMenu = 0;
+	invalidate();
 }
+
+void View::drawIcon(int x, int y, HICON i) {
+	DrawIcon(m_DCHandle, x, y, i);
+}
+
 
 void View::OnLButtonUp(MyEvent e)
 {
-	/*
-	//MyButton *b = findButton(e.x, e.y);
-	if (b) {
-		b->action();
-		return; 
-	}
-	*/
-	// no button is clicked.
-	debugOutput(toolbar->selectBtn(e.x, e.y));
-	/*
-	if (currentFig == toolbar->selectBtn(e.x, e.y) && currentFig != 0) {	//전의 버튼과 현재 버튼이 동일할 경우, 둘다 0일경우 제외
-		//debugOutput(currentFig);
-		drawmode = currentFig;
-
+	if(currentBtn)
+		currentBtn->upClick();
+	if (menuClick == true) {
+		menuClick = false;
 		return;
 	}
-	*/
+	//버튼 체크
+	TButton* c = (TButton*)toolbar->find(e.x, e.y);
+	if (c == currentBtn && c != 0 && currentBtn != 0) {
+		c->clicked();
+		currentBtn = 0;
+		changeInfo = true;
+		return;
+	}
 
 	//View는 툴바 위에서만 안그려지도록 한다.
 	if (is_drawing == false || toolbar->findToolbar(e.x, e.y)) {	//전이나 현재 위치가 toolbar 위일경우 종료
-		debugOutput("EE");
+		changeInfo = true;
 		return;
 	}
-	
-	/*
-	if (drawmode == Figure::LINE) { // 선분
-			//figType = Figure::LINE;
-		debugOutput("l");
-		addFigure(new CLine(m_startX, m_startY, e.x, e.y));
+
+	//메뉴바도 동일
+	if (is_drawing == false || menubar->findMenubar(e.x, e.y)) {	//전이나 현재 위치가 toolbar 위일경우 종료
+		changeInfo = true;
+		return;
 	}
-	else if (drawmode == Figure::ELLIPSE) {  // 타원
-		debugOutput("E");
-		addFigure(new CEllipse(m_startX, m_startY, e.x, e.y));
-	}
-	else if (drawmode == Figure::RECT) {  // 사각형
-		debugOutput("R");
-		addFigure(new Rect(m_startX, m_startY, e.x, e.y));
-	}
-	*/
-	
-	//currentFig = 0;	//초기화
-	invalidate();
+
+	//invalidate();
 }
 
 void View::OnRButtonDown(MyEvent e)
@@ -218,16 +242,20 @@ void View::drawText(std::string str, int x, int y)
 }
 
 // 모든  내용물들을 다시 그려주는 함수.  수정이 필요할 것이다.
-void View::redrawAll()
+void View::draw()
 {
 	/*
 	for (auto b : m_btnList) {
 		b->draw();
 	 }
 	 */
-	//View에서는 툴바만 그림
 	if (toolbar) {
-		toolbar->draw();
+		//if (Menu::drawstate == 0) {
+			toolbar->draw();
+		//}
+	}
+	if (menubar) {
+		menubar->draw();
 	}
 }
 
@@ -245,6 +273,7 @@ void View::onInitialize()
 {
 	// *** 모든 컴포넌트들을 여기에서 초기화하자.
 	toolbar = new Toolbar(this);	//VIew 객체를 보내 초기화
+	menubar = new MenuBar(this);	//VIew 객체를 보내 초기화
 	//toolbar->addButton(new TButton("R"));
 	//toolbar->addButton(new TButton("E"));
 	//toolbar->addButton(new TButton("L"));
@@ -315,10 +344,28 @@ MyButton * View::findButton(int x, int y)
 }
 */
 
+/*
+bool View::onMouseDown(Event e){
+	if(m_Menubar && m_MenuBar->onMOuseDOwn(e)){
+		return true;
+	}
+	m_menubar->resetMenus();
+	if(m_toolbar && m_toobar->onMouseDown(e)){
+		m_menubar->resetMenus();
+		invalidate();
+		return true;
+	}
+	return false;
+}
+
+bool View::on
+*/
 
 void View::OnMouseMove(MyEvent e)
 {
-	toolbar->onMouseMove(e.x, e.y);
+	if (selectMenu == 0)	//메뉴가 안열린상태에서만
+		toolbar->onMouseMove(e);
+	menubar->onMouseMove(e);
 	// TODO: 여기에 구현 코드 추가.
 	/*
 	MyButton *b = findButton(e.x, e.y);

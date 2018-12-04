@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "MyButton.h"
 #include "View.h"
+#include "Component.h"
+#include <iostream>
 
+using namespace std;
+
+/*
 MyButton::MyButton(int x, int y, int sizex, int sizey, std::string title)
 	:m_x(x), m_y(y), m_sizex(sizex), m_sizey(sizey), m_title(title)
 {
@@ -10,7 +15,20 @@ MyButton::MyButton(int x, int y, int sizex, int sizey, std::string title)
 MyButton::MyButton(std::string title) {
 	m_title = title;
 }
+*/
+MyButton::MyButton(int x, int y, int sizex, int sizey, string title) : Component(x, y, sizex, sizey, title) {
+	//constructor
+}
 
+MyButton::MyButton(string title) : Component(title) {
+	//constructor
+}
+
+MyButton::~MyButton() {
+
+}
+
+/*
 MyButton::~MyButton()
 {
 }
@@ -45,13 +63,14 @@ bool MyButton::inside(int x, int y) {
 		&& m_y <= y && y <= m_y + m_sizey);
 }
 
-/*
 void MyButton::action() {
 	debugOutput(m_title);
 	m_view->buttonActions(this);
 }
-*/
+
 
 void MyButton::setView(View *v) {
 	m_view = v;
 }
+
+*/

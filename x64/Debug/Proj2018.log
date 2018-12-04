@@ -1,1 +1,3 @@
-﻿  Proj2018.vcxproj -> C:\Users\jhn06\Desktop\새 폴더\MFC_Paint-master\x64\Debug\Proj2018.exe
+﻿  myView.cpp
+c:\users\jhn06\desktop\새 폴더\version2\myview.cpp(221): warning C4101: 'inputData' :참조되지 않은 지역 변수입니다.
+  Proj2018.vcxproj -> C:\Users\jhn06\Desktop\새 폴더\Version2\x64\Debug\Proj2018.exe

@@ -147,8 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="actionListener.h" />
     <ClInclude Include="CLine.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Container.h" />
     <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuBar.h" />
+    <ClInclude Include="MenuItem.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="myView.h" />
@@ -156,6 +162,7 @@
     <ClInclude Include="Figure.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="saveFigure.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TButton.h" />
@@ -163,14 +170,21 @@
     <ClInclude Include="View.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="actionListener.cpp" />
     <ClCompile Include="CLine.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="Ellipse.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuBar.cpp" />
+    <ClCompile Include="MenuItem.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="myView.cpp" />
     <ClCompile Include="Proj2018.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="saveFigure.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -185,6 +199,15 @@
     <ResourceCompile Include="Proj2018.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icon1.ico" />
+    <Image Include="icon2.ico" />
+    <Image Include="icon3.ico" />
+    <Image Include="icon4.ico" />
+    <Image Include="icon5.ico" />
+    <Image Include="icon6.ico" />
+    <Image Include="icon7.ico" />
+    <Image Include="icon8.ico" />
+    <Image Include="icon9.ico" />
     <Image Include="Proj2018.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
