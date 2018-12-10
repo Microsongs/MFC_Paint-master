@@ -2,8 +2,8 @@
 #include "CLine.h"
 #include "View.h"
 
-CLine::CLine(int x1, int y1, int x2, int y2,int pen)
-	:Figure(x1, y1, x2, y2,pen)
+CLine::CLine(int group, int type,int x1, int y1, int x2, int y2,int pen,int fill)
+	:Figure(group, type, x1, y1, x2, y2,pen)
 {
 }
 

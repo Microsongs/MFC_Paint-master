@@ -80,7 +80,7 @@ BOOL View::initInstance( int nCmdShow )
 	return TRUE;
 }
 
-void View::OnLButtonDown(MyEvent e)
+void View::OnLButtonDown(long wParam, MyEvent e)
 {
 	m_startx = e.x; m_starty = e.y;
 	
@@ -127,7 +127,7 @@ void View::OnLButtonDown(MyEvent e)
 	}
 	menubar->cleanCheck();
 	selectMenu = 0;
-	invalidate();
+	//invalidate();
 }
 
 void View::drawIcon(int x, int y, HICON i) {
@@ -135,7 +135,7 @@ void View::drawIcon(int x, int y, HICON i) {
 }
 
 
-void View::OnLButtonUp(MyEvent e)
+void View::OnLButtonUp(long wParam, MyEvent e)
 {
 	if(currentBtn)
 		currentBtn->upClick();
@@ -274,19 +274,6 @@ void View::onInitialize()
 	// *** 모든 컴포넌트들을 여기에서 초기화하자.
 	toolbar = new Toolbar(this);	//VIew 객체를 보내 초기화
 	menubar = new MenuBar(this);	//VIew 객체를 보내 초기화
-	//toolbar->addButton(new TButton("R"));
-	//toolbar->addButton(new TButton("E"));
-	//toolbar->addButton(new TButton("L"));
-	debugOutput("OK");
-	
-	/*
-	btnRect = new MyButton(10, 10, 200, 50, "사각형");
-	btnEllipse = new MyButton(220, 10, 200, 50, "타원");
-	btnLine = new MyButton(430, 10, 200, 50, "선분");
-	addButton(btnRect);
-	addButton(btnEllipse);
-	addButton(btnLine);
-	*/
 
 	invalidate();
 }

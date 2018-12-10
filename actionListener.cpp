@@ -74,4 +74,13 @@ void menuItemActionListener::actionPerformed(Component *c)
 	else if (c->getTitle() == "파란색") {
 		m_view->setFillColor(RGB(0, 0, 255));
 	}
+	else if (c->getTitle() == "이동") {
+		m_view->setDrawMode(myView::MOVE);
+	}
+	else if (c->getTitle() == "복사") {
+		m_view->setDrawMode(myView::COPY);
+	}
+	else if (c->getTitle() == "그룹") {
+		m_view->setDrawMode(myView::GROUP);
+	}
 }

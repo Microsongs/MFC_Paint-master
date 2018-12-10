@@ -2,8 +2,8 @@
 #include "Rect.h"
 #include "View.h"
 
-Rect::Rect(int x, int y, int x2, int y2,int pen,int fill)
-	:Figure(x,y,x2,y2,pen,fill)
+Rect::Rect(int group, int type,int x, int y, int x2, int y2,int pen,int fill)
+	:Figure(group,type,x,y,x2,y2,pen,fill)
 {
 	if (m_x1 > m_x2) {  // ÁÂ-¿ì¸¦ ¹Ù²Û´Ù.
 		int t = m_x1; m_x1 = m_x2; m_x2 = t;

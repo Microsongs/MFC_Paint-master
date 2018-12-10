@@ -40,8 +40,8 @@ public:
 	BOOL initInstance(/*HINSTANCE hInstance, */int nCmdShow);
 
 	// 이벤트 처리 함수들
-	virtual void OnLButtonDown(MyEvent e);
-	virtual void OnLButtonUp(MyEvent e);
+	virtual void OnLButtonDown(long wParam, MyEvent e);
+	virtual void OnLButtonUp(long wParam, MyEvent e);
 	virtual void OnRButtonDown(MyEvent e);
 	virtual void OnRButtonUp(MyEvent e);
 	virtual void OnChar(long ch);
